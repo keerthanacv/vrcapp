@@ -1,12 +1,16 @@
 package com.example.vrcapp.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 //import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "userstatus")
+@Getter
+@Setter
 public class UserStatus {
 
     @Id
@@ -16,25 +20,25 @@ public class UserStatus {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "password")
+   @Column(name = "password")
     private String password;
 
     @Column(name = "emailId")
     private String emailId;
 
     @Column(name = "role_type")
-    private String roleType;
+    private String role_type;
 
     @Column(name = "user_type")
-    private String userType;
+    private String user_type;
 
     @Column(name = "createdAt")
     private Date createdAt;
 
-    @Column(name = "updatedAt")
+   // @Column(name = "updatedAt")
     private Date updatedAt;
 
-    @Column(name = "status")
+   // @Column(name = "status")
     private String status;
 
 }
