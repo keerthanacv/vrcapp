@@ -1,41 +1,39 @@
 package com.example.vrcapp.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-//import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "userstatus")
-public class UserStatus {
-
+@Table(name = "users")
+public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "password")
+    @Column(name="password")
     private String password;
 
-    @Column(name = "emailId")
+    @Column(name="emailId")
     private String emailId;
 
-    @Column(name = "role_type")
+    @Column(name="role_type")
     private String roleType;
 
-    @Column(name = "user_type")
+    @Column(name="user_type")
     private String userType;
 
     @Column(name = "createdAt")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    @Column(name = "updatedAt")
-    private Date updatedAt;
-
-    @Column(name = "status")
-    private String status;
+    @Column(name="updatedAt")
+    private LocalDateTime updatedAt;
 
     public int getId() {
         return id;
@@ -85,29 +83,19 @@ public class UserStatus {
         this.userType = userType;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-
 }
