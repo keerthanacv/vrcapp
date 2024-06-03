@@ -1,15 +1,25 @@
 package com.example.vrcapp.dto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+
+@Getter
+@Setter
+@Data
 public class UserRegistrationDto {
     @Email
-    @NotBlank
+    @NotBlank(message = "Email Id Cannot be blank")
     @Size(max = 100)
+    @NotNull(message = "Email Id cannot be null")
     private String emailId;
 
-    @NotBlank
-    @Size(min = 8, max = 200)
+    @NotBlank(message = "Password cannot be blank")
+    @javax.validation.constraints.Size(min = 8, max = 200)
     private String password;
 
     private String confirmpassword;
@@ -20,44 +30,4 @@ public class UserRegistrationDto {
     @NotBlank
     private String name;
 
-    // Getters and Setters
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getConfirmpassword() {
-        return confirmpassword;
-    }
-
-    public void setConfirmpassword(String confirmpassword) {
-        this.confirmpassword = confirmpassword;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

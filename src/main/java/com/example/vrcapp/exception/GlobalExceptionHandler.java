@@ -1,33 +1,36 @@
 package com.example.vrcapp.exception;
-import com.example.vrcapp.exception.ApiException;
 import com.example.vrcapp.util.ResponseWrapper;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
 @ComponentScan
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ResponseWrapper> handleApiException(ApiException ex) {
-        return buildResponseEntity(new ResponseWrapper(ex.getStatus(), ex.getMessage(), null));
+    public ResponseEntity<Object> handleApiException(ApiException ex) {
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ResponseEntity<ResponseWrapper> handleValidationExceptions(MethodArgumentNotValidException ex) {
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                        HttpHeaders headers,
+                                                                        HttpStatusCode statusCode,
+                                                                        WebRequest request) {
         System.out.println("enter exception");
         BindingResult result = ex.getBindingResult();
         Map<String, String> errors = new HashMap<>();
@@ -38,7 +41,7 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(responseWrapper);
     }
 
-    private ResponseEntity<ResponseWrapper> buildResponseEntity(ResponseWrapper responseWrapper) {
+    private ResponseEntity<Object> buildResponseEntity(ResponseWrapper responseWrapper) {
         return new ResponseEntity<>(responseWrapper, HttpStatus.valueOf(responseWrapper.getStatus()));
     }
 }
