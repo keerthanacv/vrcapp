@@ -17,17 +17,18 @@ public class UserRegistrationDto {
     @Size(max = 100)
     @NotNull(message = "Email Id cannot be null")
     private String emailId;
-
+    @NotNull(message = "Password Id cannot be null")
     @NotBlank(message = "Password cannot be blank")
     @javax.validation.constraints.Size(min = 8, max = 200)
     private String password;
-
+    @NotNull(message = "Confirm password cannot be null")
+    @NotBlank(message = "Confirm password cannot be blank")
     private String confirmpassword;
-
-    @NotBlank
+    @NotNull(message = "Type cannot be null")
+    @NotBlank(message = "Type cannot be blank")
     private String type;
-
-    @NotBlank
+    @NotNull(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
 }
