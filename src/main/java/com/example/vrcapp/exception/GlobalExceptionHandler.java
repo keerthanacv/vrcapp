@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<Object> handleApiException(ApiException ex) {
-        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(),ex.getStatusCode());
     }
 
 
@@ -37,7 +39,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         for (FieldError fieldError : result.getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        ResponseWrapper responseWrapper = new ResponseWrapper(HttpStatus.BAD_REQUEST.value(), "Validation error", errors);
+        ResponseWrapper responseWrapper = new ResponseWrapper(HttpStatus.BAD_REQUEST.value(), "Validation error", new ArrayList<>(),
+                Arrays.asList(errors));
         return buildResponseEntity(responseWrapper);
     }
 

@@ -7,14 +7,18 @@ import com.example.vrcapp.model.Users;
 import com.example.vrcapp.payload.request.LoginUser;
 import com.example.vrcapp.repository.UserStatusRepository;
 import com.example.vrcapp.repository.UsersRepository;
+import com.example.vrcapp.util.ResponseWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.LinkOption;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,22 +39,22 @@ public class UserService {
         return userStatusRepository.findById(id).orElse(null);
     }
 
-    public List<UserStatus> getAllUnapprovedUsers() {
+    public ResponseWrapper getAllUnapprovedUsers() {
         LOGGER.info("In the service class to get all unapproved users");
-        return userStatusRepository.findAll();
+        return new ResponseWrapper(200,"",userStatusRepository.findAll(),new ArrayList<>());
     }
 
-    public UserStatus createUser(UserRegistrationDto userDto) {
+    public UserStatus createUser(UserRegistrationDto userDto) throws Exception{
         Optional<UserStatus> userOpt = userStatusRepository.findByEmailId(userDto.getEmailId());
         System.out.println("userOpt:"+userOpt);
         System.out.println("pass1:"+userDto.getPassword());
         System.out.println("pass2:"+userDto.getConfirmpassword());
         if (userOpt.isPresent()) {
-            throw new ApiException(400, "EMAIL ID ALREADY PRESENT");
+            throw new ApiException(1L,"EMAIL ID ALREADY PRESENT", HttpStatusCode.valueOf(400));
         }
 
         if (!userDto.getPassword().equals(userDto.getConfirmpassword())) {
-            throw new ApiException(400, "PASSWORDS DOES NOT MATCH");
+            throw new ApiException(1L,"PASSWORDS DOESN'T MATCH", HttpStatusCode.valueOf(400));
         }
 
         UserStatus userDetails = new UserStatus();
@@ -64,7 +68,7 @@ public class UserService {
         try {
             return userStatusRepository.save(userDetails);
         } catch (Exception e) {
-            throw new ApiException(500, "Error while creating user");
+            throw new ApiException(1L,"SOMETHING WENT WRONG", HttpStatusCode.valueOf(500));
         }
     }
 

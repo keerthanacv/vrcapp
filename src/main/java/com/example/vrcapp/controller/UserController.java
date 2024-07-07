@@ -10,9 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -25,15 +26,15 @@ public class UserController {
 
     //Admin Module
     @GetMapping("/admin/getUsersList")
-    public List<UserStatus> getAllUnapprovedUsers() {
+    public ResponseEntity<?> getAllUnapprovedUsers() {
         LOGGER.info("Getting all users list");
-        return new ResponseEntity<>(userService.getAllUnapprovedUsers(), HttpStatus.OK).getBody();
+            return new ResponseEntity<>(userService.getAllUnapprovedUsers(), HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseWrapper> register(@Valid @RequestBody UserRegistrationDto userDto) {
+    public ResponseEntity<ResponseWrapper> register(@Valid @RequestBody UserRegistrationDto userDto) throws Exception{
         UserStatus user = userService.createUser(userDto);
-        return new ResponseEntity<>(new ResponseWrapper(201, "Success", user), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseWrapper(201, "Success",Arrays.asList(user),new ArrayList<>()), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")

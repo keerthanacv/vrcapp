@@ -1,37 +1,25 @@
 package com.example.vrcapp.util;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
 public class ResponseWrapper {
     private int status;
     private String message;
-    private Object data;
+    private List<?> data;
 
-    public ResponseWrapper(int status, String message, Object data) {
+    private List<?> errors;
+
+    public ResponseWrapper(int status, String message, List<?> data,List<?> errors) {
         this.status = status;
         this.message = message;
         this.data = data;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
+        this.errors = errors;
     }
 }
