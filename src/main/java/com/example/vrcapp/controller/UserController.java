@@ -38,8 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity loginUser(@Valid @RequestBody LoginUser loginUser)
-    {
+    public ResponseEntity loginUser(@Valid @RequestBody LoginUser loginUser) throws Exception {
         userService.loginRegisteredUser(loginUser);
         return new ResponseEntity("success",HttpStatus.OK);
     }

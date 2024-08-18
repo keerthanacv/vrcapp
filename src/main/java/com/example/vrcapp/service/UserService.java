@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     @Autowired
@@ -72,13 +75,28 @@ public class UserService {
         }
     }
 
-    public String loginRegisteredUser(LoginUser loginUser)
-    {
+    public Users loginRegisteredUser(LoginUser loginUser) throws Exception {
        Optional<Users> user = usersRepository.findByEmailId(loginUser.getEmailId());
        if(user.isPresent())
-           return "Successful";
+           return user.get();
        else
-           return "Unsuccessfull user not present";
+           throw new Exception();
+    }
+    public Users getUser(String email) throws Exception {
+        Optional<Users> user = usersRepository.findByEmailId(email);
+        if(user.isPresent())
+            return user.get();
+        else
+            throw new Exception();
     }
 
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Users> user = usersRepository.findByEmailId(email);
+        if(user.isPresent())
+            return user.get();
+        else
+            throw new UsernameNotFoundException("No username found");
+    }
 }
